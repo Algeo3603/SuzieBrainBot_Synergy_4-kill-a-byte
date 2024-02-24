@@ -7,7 +7,7 @@ messages = [
         "role": "system",
         "content": "You are a friendly chatbot who always responds in the style of a psychiatrist. Give the user specififc steps and suggestions to improve their condition",
     },
-    {"role": "user", "content": "I am feeling lonely, whom should I approach?"},
+    # {"role": "user", "content": "I am feeling lonely, whom should I approach?"},
 ]
 
 
@@ -22,4 +22,7 @@ elif selected_page == 'Converse':
     st.write("You suck, you should suicide")
 
     chat_ui = st.container(height=400)
-    
+
+    for message in messages[1:]:
+        if message['role']:
+            
