@@ -23,6 +23,5 @@ elif selected_page == 'Converse':
 
     chat_ui = st.container(height=400)
 
-    for message in messages[1:]:
-        if message['role']:
-            
+    # for message in messages[1:]:
+        # if message['role']:
