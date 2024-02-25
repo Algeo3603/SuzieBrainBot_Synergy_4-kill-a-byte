@@ -17,7 +17,7 @@ st.session_state.messages = [
 
 st.set_page_config(page_title="Suicide Help", layout="wide")
 
-nav_pages = ['Suzie wants to know', 'Converse with Suzie']
+nav_pages = ['Suzie wants to know', 'Converse with Suzie', 'EEG analysis']
 selected_page = st.sidebar.selectbox("Navigate: ", nav_pages)
 
 if selected_page == 'Suzie wants to know':
@@ -89,3 +89,8 @@ elif selected_page == 'Converse with Suzie':
             st.write(response)
         # Add assistant response to chat history    
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+elif selected_page == 'EEG analysis':
+    st.title("EEG analysis")
+
+    
