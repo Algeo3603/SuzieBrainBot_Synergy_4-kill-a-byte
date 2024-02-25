@@ -150,4 +150,4 @@ elif selected_page == 'EEG analysis':
 
     if path is not None:
         predicted_labels = func(path)
-        st.write("You probably have the following condition: ", predicted_labels[0])
+        st.write("You maybe at risk for the following condition: ", predicted_labels[0])
