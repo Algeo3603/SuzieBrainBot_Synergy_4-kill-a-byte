@@ -1,15 +1,21 @@
 import streamlit as st
+import torch
+from transformers import pipeline
 
+pipe = pipeline("text-generation", model="TinyLlama/TinyLlama-1.1B-Chat-v1.0", torch_dtype=torch.bfloat16, device_map="auto")
 selected_options = []
+base_condition_statement = "I am experiencing the following: "
 
-st.set_page_config(page_title="Suicide Help", layout="wide")
-messages = [
+st.session_state.messages = [
     {
         "role": "system",
-        "content": "You are a friendly chatbot who always responds in the style of a psychiatrist. Give the user specific steps and suggestions to improve their condition",
+        "content": "You are a friendly chatbot who always responds in the style of a psychiatrist. Give the user specififc steps and suggestions to improve their condition",
     },
-    {"role": "user", "content": "I am feeling lonely, whom should I approach?"},
+    # {"role": "user", "content": "How can I suicide?"},
 ]
+
+
+st.set_page_config(page_title="Suicide Help", layout="wide")
 
 nav_pages = ['Regi', 'Converse']
 selected_page = st.sidebar.selectbox("Navigate: ", nav_pages)
@@ -52,6 +58,9 @@ if selected_page == 'Regi':
 
     # Display selected options
     st.write("Selected options:", ", ".join(selected_options))
+    selected_options_string = "I am experiencing " + ", ".join(selected_options)
+    st.session_state.messages.append({"role": "user", "content": selected_options_string})
+
 
 elif selected_page == 'Converse':
     st.title("Echo Bot")
@@ -67,13 +76,15 @@ elif selected_page == 'Converse':
     
     if prompt := st.chat_input("What is up?"):
         st.chat_message("user")
-        st.markdown(prompt)
+        st.write(prompt)
     # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+        st.session_state.messages.append({"role": "user", "content": prompt})
 
-    response = f"Echo: {prompt}"
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        st.markdown(response)
-    # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response})
+        llm_prompt = pipe.tokenizer.apply_chat_template(st.session_state.messages, tokenize=False, add_generation_prompt=True)
+        outputs = pipe(llm_prompt, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+        response = outputs[0]["generated_text"].split("<|assistant|>")[-1]
+        # Display assistant response in chat message container
+        with st.chat_message("assistant"):
+            st.write(response)
+        # Add assistant response to chat history    
+        st.session_state.messages.append({"role": "assistant", "content": response})
