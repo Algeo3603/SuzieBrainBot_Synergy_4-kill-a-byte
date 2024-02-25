@@ -17,11 +17,11 @@ st.session_state.messages = [
 
 st.set_page_config(page_title="Suicide Help", layout="wide")
 
-nav_pages = ['Regi', 'Converse']
+nav_pages = ['Suzie wants to know', 'Converse with Suzie']
 selected_page = st.sidebar.selectbox("Navigate: ", nav_pages)
 
-if selected_page == 'Regi':
-    st.title("Regi page")
+if selected_page == 'Suzie wants to know':
+    st.title("Suzie wants to know")
     st.write("Answer the following questions to help us understand your situation better.")
 
     # Form with questions and checkbox options
@@ -62,18 +62,19 @@ if selected_page == 'Regi':
     st.session_state.messages.append({"role": "user", "content": selected_options_string})
 
 
-elif selected_page == 'Converse':
-    st.title("Echo Bot")
+elif selected_page == 'Converse with Suzie':
+    st.title("Converse with Suzie")
 
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
     # Display chat messages from history on app rerun
-    for message in st.session_state.messages:
+    for message in st.session_state.messages[1:]:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
     
+
     if prompt := st.chat_input("What is up?"):
         st.chat_message("user")
         st.write(prompt)
