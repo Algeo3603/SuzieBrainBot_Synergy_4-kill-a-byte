@@ -68,7 +68,13 @@ def func(path):
     predicted_labels = rf_classifier.predict(pca_data) 
     return predicted_labels
 
-st.set_page_config(page_title="Suicide Help", layout="wide")
+st.set_page_config(page_title="Suzie :)", layout="wide")
+# suzie_logo = "suzie.png"
+# # st.write(
+# #     f'<img src="{suzie_logo}" alt="Suzie!" style="position:absolute; top:10px; right:10px;" />',
+# #     unsafe_allow_html=True
+# # )
+# st.image(suzie_logo, width=100, caption="Suzie!", use_container_width=False, output_format="PNG", clamp=True, channels="RGB", format="PNG")
 
 nav_pages = ['Suzie wants to know', 'Converse with Suzie', 'EEG analysis']
 selected_page = st.sidebar.selectbox("Navigate: ", nav_pages)
@@ -151,3 +157,15 @@ elif selected_page == 'EEG analysis':
     if path is not None:
         predicted_labels = func(path)
         st.write("You maybe at risk for the following condition: ", predicted_labels[0])
+        if predicted_labels[0] == 'Mood disorder':
+            st.write(r"Approximately 15-20% of individuals with mood disorder are observed to be at elevated risk for suicide.")
+        elif predicted_labels[0] == 'Schizophrenia':
+            st.write(r"Approximately 5-10% of individuals with Schizophrenia are observed to be at elevated risk for suicide.")
+        elif predicted_labels[0] == 'Anxiety disorder':
+            st.write(r"Approximately 5-15% of individuals with Anxiety disorder are observed to be at elevated risk for suicide.")
+        elif predicted_labels[0] == 'Trauma and stress related disorder':
+            st.write(r"Approximately 10-20% of individuals with Trauma and stress related disorder are observed to be at elevated risk for suicide.")
+        elif predicted_labels[0] == 'Addictive disorder':
+            st.write(r"Approximately 10-25% of individuals with Addictive disorder (especially substance abuse) are observed to be at elevated risk for suicide.")
+        elif predicted_labels[0] == 'Obsessive compulsive disorder':
+            st.write(r"Approximately 5-10% of individuals with Obsessive compulsive disorder are observed to be at elevated risk for suicide.")
